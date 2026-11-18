@@ -11,7 +11,6 @@ function download(name,content){
 }
 $("#upload-files").onclick=()=>$("#file-input").click();
 $("#upload-folder").onclick=()=>$("#folder-input").click();
-$("#open-files").onclick=()=>$("#file-input").click();
 $("#download-current").onclick=()=>{
  const x=api();if(!x.active||x.files[x.active]===undefined){status("No hay archivo abierto");return;}
  x.save();download(x.active,x.files[x.active]);status("Archivo descargado");
@@ -22,8 +21,7 @@ $("#rename-item").onclick=()=>{
  if(!name)return;const next=name.trim().replace(/^\/+|\.\./g,"");
  if(!next||x.files[next]!==undefined){alert("Ruta no válida o ya existente.");return;}
  x.files[next]=x.files[old];delete x.files[old];
- x.tabs=x.tabs; // Tabs are managed by the core editor.
- const tabs=[...document.querySelectorAll(".tab .tab-name")];
+ x.tabs=x.tabs.map(p=>p===old?next:p);
  x.open(next);x.persist();x.drawTree();status("Archivo renombrado");
 };
 $("#delete-item").onclick=()=>{
