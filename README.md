@@ -6,7 +6,8 @@ IDE web independiente, con una experiencia híbrida inspirada en VS Code. No dep
 
 - Editor Monaco con resaltado, autocompletado básico del lenguaje, minimapa, múltiples pestañas y atajos.
 - Explorador de archivos, creación de carpetas, importación de archivos y carpetas.
-- Búsqueda de texto en todos los archivos del proyecto.
+- Búsqueda de texto en todos los archivos del proyecto, con reemplazo global y recuento de coincidencias.
+- Carpetas plegables en el explorador.
 - Vista previa HTML que integra el CSS y JavaScript hermanos del archivo HTML.
 - Vista dividida para editar y previsualizar a la vez.
 - Ejecución Python mediante Pyodide/WebAssembly en un Web Worker.
@@ -14,6 +15,7 @@ IDE web independiente, con una experiencia híbrida inspirada en VS Code. No dep
 - Plantillas web, Python, React por CDN y JSON.
 - Importación de repositorios públicos de GitHub.
 - Exportación del proyecto completo a ZIP.
+- Copias de seguridad JSON restaurables, además del ZIP.
 - Guardado automático en el almacenamiento local del navegador.
 - Tema claro/oscuro y paleta de comandos.
 
@@ -22,6 +24,8 @@ IDE web independiente, con una experiencia híbrida inspirada en VS Code. No dep
 - Ctrl + S: guardar.
 - Ctrl + Enter: ejecutar el archivo activo.
 - Ctrl + Shift + P: abrir la paleta de comandos.
+- Ctrl + Shift + F: buscar en todo el proyecto.
+- Ctrl + H: abrir búsqueda y reemplazo.
 
 ## Publicar en Cloudflare Pages
 
