@@ -1,10 +1,76 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101116"><title>Code Studio</title><link rel="stylesheet" href="./style.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script></head>
-<body><div class="app-shell">
-<header class="titlebar"><div class="brand"><span class="brand-mark">&lt;/&gt;</span><span>Code Studio</span><span class="brand-tag">WEB IDE</span></div><div class="top-actions"><button id="new-file">Nuevo archivo</button><button id="open-files">Abrir</button><button id="save-file" class="quiet">Guardar</button><button id="run-code" class="run-button">Ejecutar</button></div></header>
-<div class="workspace"><aside class="activity"><button class="activity-btn active" title="Explorador">▤</button><button class="activity-btn" id="search-toggle" title="Buscar">⌕</button><div class="activity-spacer"></div><button class="activity-btn" id="theme-toggle" title="Cambiar tema">◐</button></aside>
-<aside class="sidebar"><div class="side-heading"><span>EXPLORADOR</span><div><button id="add-file" title="Nuevo archivo">+</button><button id="add-folder" title="Nueva carpeta">▱</button></div></div><div class="project-name"><span>⌄</span><strong>MI PROYECTO</strong></div><div id="file-tree" class="file-tree"></div><div class="side-footer"><span class="status-dot"></span> Guardado en este dispositivo</div></aside>
-<main class="main-area"><div id="tabs" class="tabs"></div><div class="editor-toolbar"><div id="breadcrumb">Selecciona un archivo</div><div class="editor-tools"><span id="language-label">Texto</span><button id="preview-button">Vista previa</button></div></div><section class="editor-wrap"><div id="editor"></div><textarea id="fallback-editor" spellcheck="false" hidden></textarea><div id="welcome" class="welcome"><div class="welcome-logo">&lt;/&gt;</div><h1>Code Studio</h1><p>Un espacio de trabajo para Python y desarrollo web.</p><div class="welcome-actions"><button id="welcome-new">Crear archivo</button><button id="welcome-open">Abrir archivos</button></div><div class="welcome-shortcuts"><span>Ctrl + S <small>Guardar</small></span><span>Ctrl + Enter <small>Ejecutar</small></span></div></div></section>
-<section class="bottom-panel" id="bottom-panel"><div class="panel-heading"><div class="panel-tabs"><button class="panel-tab selected" data-panel="terminal">CONSOLA</button><button class="panel-tab" data-panel="problems">PROBLEMAS</button><button class="panel-tab" data-panel="preview">VISTA PREVIA</button></div><div class="panel-actions"><button id="clear-output">Limpiar</button><button id="hide-panel">⌄</button></div></div><div id="terminal" class="terminal"><div class="terminal-line muted">Consola preparada. Ejecuta un archivo para ver su salida.</div></div><div id="problems" class="terminal" hidden><div class="terminal-line muted">No hay problemas detectados.</div></div><div id="preview-panel" class="preview-panel" hidden><iframe id="preview" title="Vista previa" sandbox="allow-scripts allow-forms allow-modals"></iframe></div></section></main></div>
-<footer class="statusbar"><div><span class="status-dot"></span><span id="status-message">Listo</span></div><div><span id="cursor-position">Ln 1, Col 1</span><span>UTF-8</span><span id="status-language">Python</span></div></footer></div>
-<input id="file-input" type="file" multiple hidden accept=".py,.html,.htm,.css,.js,.json,.txt,.md,.xml,.svg"><script src="./app.js"></script></body></html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101116"><meta name="description" content="Code Studio: entorno de desarrollo web en el navegador.">
+<title>Code Studio</title>
+<link rel="stylesheet" href="./style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+<div class="app-shell">
+<header class="titlebar">
+ <div class="brand"><span class="brand-mark">&lt;/&gt;</span><span>Code Studio</span><span class="brand-tag">WEB IDE</span></div>
+ <div class="top-actions">
+  <button id="command-button" title="Paleta de comandos (Ctrl+Shift+P)">⌘ Comandos</button>
+  <button id="new-file">Nuevo</button><button id="open-files">Importar</button>
+  <button id="save-file" class="quiet">Guardar</button><button id="run-code" class="run-button">▶ Ejecutar</button>
+ </div>
+</header>
+<div class="workspace">
+ <aside class="activity">
+  <button class="activity-btn active" data-view="explorer" title="Explorador">▤</button>
+  <button class="activity-btn" data-view="search" title="Buscar">⌕</button>
+  <button class="activity-btn" data-view="github" title="GitHub">⑂</button>
+  <button class="activity-btn" data-view="templates" title="Plantillas">▦</button>
+  <div class="activity-spacer"></div><button class="activity-btn" id="theme-toggle" title="Cambiar tema">◐</button>
+ </aside>
+ <aside class="sidebar">
+  <section class="sidebar-view" id="view-explorer">
+   <div class="side-heading"><span>EXPLORADOR</span><div><button id="add-file" title="Nuevo archivo">＋</button><button id="add-folder" title="Nueva carpeta">▱</button></div></div>
+   <div class="project-name"><span>⌄</span><strong id="project-title">MI PROYECTO</strong><div class="project-actions"><button id="project-export" title="Exportar ZIP">⇩</button></div></div>
+   <div id="file-tree" class="file-tree"></div>
+  </section>
+  <section class="sidebar-view" id="view-search" hidden>
+   <div class="side-heading">BUSCAR EN ARCHIVOS</div><div class="sidebar-content"><input id="search-query" placeholder="Buscar texto…"><label class="checkline"><input id="search-case" type="checkbox"> Distinguir mayúsculas</label><div id="search-results"></div></div>
+  </section>
+  <section class="sidebar-view" id="view-github" hidden>
+   <div class="side-heading">GITHUB</div><div class="sidebar-content">
+    <p class="help-text">Importa repositorios públicos de GitHub. La publicación de cambios requiere autenticación, que esta versión estática no almacena.</p>
+    <label>Repositorio público</label><input id="github-repo" placeholder="usuario/repositorio">
+    <button class="wide-button" id="github-import">Importar repositorio</button><div id="github-status" class="help-text"></div>
+    <a href="https://github.com/new" target="_blank" rel="noopener">Crear repositorio en GitHub ↗</a>
+   </div>
+  </section>
+  <section class="sidebar-view" id="view-templates" hidden>
+   <div class="side-heading">PLANTILLAS</div><div class="sidebar-content">
+    <button class="template-card" data-template="web"><strong>Web básica</strong><span>HTML + CSS + JavaScript</span></button>
+    <button class="template-card" data-template="python"><strong>Python</strong><span>Proyecto inicial Python</span></button>
+    <button class="template-card" data-template="react"><strong>React (CDN)</strong><span>Prototipo React sin build</span></button>
+    <button class="template-card" data-template="json"><strong>JSON</strong><span>Datos y configuración</span></button>
+   </div>
+  </section>
+  <div class="side-footer"><span class="status-dot"></span><span id="storage-status">Guardado en este dispositivo</span></div>
+ </aside>
+ <main class="main-area">
+  <div id="tabs" class="tabs"></div>
+  <div class="editor-toolbar"><div id="breadcrumb">Selecciona un archivo</div><div class="editor-tools"><span id="language-label">Texto</span><button id="preview-button">Vista previa</button><button id="split-button">Dividir</button></div></div>
+  <section class="editor-wrap" id="editor-wrap"><div id="editor"></div><textarea id="fallback-editor" spellcheck="false" hidden></textarea>
+   <div id="welcome" class="welcome"><div class="welcome-logo">&lt;/&gt;</div><h1>Code Studio</h1><p>Un entorno de desarrollo para crear, ejecutar y probar proyectos.</p><div class="welcome-actions"><button id="welcome-new">Crear archivo</button><button id="welcome-open">Importar proyecto</button></div><div class="welcome-shortcuts"><span>Ctrl + S <small>Guardar</small></span><span>Ctrl + Enter <small>Ejecutar</small></span><span>Ctrl + Shift + P <small>Comandos</small></span></div></div>
+   <div class="split-preview" id="split-preview" hidden><div class="split-head">VISTA PREVIA <button id="close-split">×</button></div><iframe id="split-frame" title="Vista previa dividida" sandbox="allow-scripts allow-forms allow-modals"></iframe></div>
+  </section>
+  <section class="bottom-panel" id="bottom-panel">
+   <div class="panel-heading"><div class="panel-tabs"><button class="panel-tab selected" data-panel="terminal">CONSOLA</button><button class="panel-tab" data-panel="problems">PROBLEMAS</button><button class="panel-tab" data-panel="preview">VISTA PREVIA</button></div><div class="panel-actions"><button id="clear-output">Limpiar</button><button id="hide-panel">⌄</button></div></div>
+   <div id="terminal" class="terminal"><div class="terminal-line muted">Consola preparada. Escribe help para ver los comandos disponibles.</div><form id="terminal-form" class="terminal-input-row"><span>›</span><input id="terminal-input" autocomplete="off" spellcheck="false" placeholder="help"></form></div>
+   <div id="problems" class="terminal" hidden><div class="terminal-line muted">Los errores de ejecución aparecerán aquí.</div></div>
+   <div id="preview-panel" class="preview-panel" hidden><iframe id="preview" title="Vista previa" sandbox="allow-scripts allow-forms allow-modals"></iframe></div>
+  </section>
+ </main>
+</div>
+<footer class="statusbar"><div><span class="status-dot"></span><span id="status-message">Listo</span></div><div><span id="cursor-position">Ln 1, Col 1</span><span>UTF-8</span><span id="status-language">Sin archivo</span><span id="status-branch">LOCAL</span></div></footer>
+</div>
+<div class="modal-backdrop" id="command-modal" hidden><div class="command-box"><input id="command-filter" placeholder="Escribe un comando…"><div id="command-list"></div><div class="modal-hint">↑ ↓ para navegar · Enter para ejecutar · Esc para cerrar</div></div></div>
+<input id="file-input" type="file" multiple hidden><input id="folder-input" type="file" webkitdirectory directory multiple hidden>
+<script src="./app.js"></script>
+</body></html>
