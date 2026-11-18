@@ -13,7 +13,7 @@ IDE web independiente con una interfaz oscura inspirada en LUIS OS.
 Este directorio está preparado para un proyecto Pages separado, sin modificar el despliegue de LUIS OS.
 
 1. Crea un proyecto Cloudflare Pages conectado al repositorio.
-2. En la configuración de compilación establece **Root directory (advanced)** en `code-studio`.
+2. Deja **Root directory (advanced)** en `/` (raíz del repositorio).
 3. No requiere comando de build ni carpeta de salida: es una web estática.
 4. Asigna el subdominio que prefieras al nuevo proyecto.
 
