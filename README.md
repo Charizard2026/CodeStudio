@@ -10,7 +10,7 @@ IDE web independiente con una interfaz oscura inspirada en LUIS OS.
 - Pestañas, creación e importación de archivos, guardado local y exportación de archivos.
 
 ## Publicar en Cloudflare Pages
-Este directorio está preparado para un proyecto Pages separado, sin modificar el despliegue de LUIS OS.
+Este repositorio contiene Code Studio como sitio estático independiente, separado de LUIS OS.
 
 1. Crea un proyecto Cloudflare Pages conectado al repositorio.
 2. Deja **Root directory (advanced)** en `/` (raíz del repositorio).
