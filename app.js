@@ -78,7 +78,7 @@ $("#terminal-form").onsubmit=e=>{e.preventDefault();const v=$("#terminal-input")
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==="p"){e.preventDefault();openCommands();}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="s"){e.preventDefault();save();}if((e.ctrlKey||e.metaKey)&&e.key==="Enter"){e.preventDefault();run();}if(e.key==="Escape"&&!$("#command-modal").hidden)closeCommands();});
 window.addEventListener("message",e=>{if(e.data?.type==="cs-preview-error"){log("Vista previa: "+e.data.text,"error");const p=$("#problems");p.innerHTML="";const d=document.createElement("div");d.className="terminal-line error";d.textContent=e.data.text;p.append(d);}});
 window.addEventListener("beforeunload",save);
-window.CodeStudio={get files(){return files;},get active(){return active;},save,open,closeTab,drawTree,drawTabs,persist,importList,exportZip,downloadBlob,newFile,newFolder,setEditorValue};
+window.CodeStudio={get files(){return files;},get active(){return active;},get tabs(){return tabs;},set tabs(value){tabs=value;},save,open,closeTab,drawTree,drawTabs,persist,importList,exportZip,downloadBlob,newFile,newFolder,setEditorValue};
 load();drawTree();drawTabs();initEditor();if(active&&!editor){$("#welcome").hidden=true;$("#fallback-editor").hidden=false;$("#fallback-editor").value=files[active];$("#breadcrumb").textContent=active;$("#language-label").textContent=lang(active);}
 log("Code Studio listo. Ctrl+Shift+P abre la paleta de comandos.","system");
 })();
