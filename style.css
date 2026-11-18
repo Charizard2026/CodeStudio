@@ -7,3 +7,13 @@
 .file-drop-active{outline:2px dashed var(--accent);outline-offset:-5px;background:rgba(166,156,255,.07)}
 @media(max-width:900px){#upload-files,#upload-folder{display:none}}
 @media(max-width:650px){.top-actions #download-current,.top-actions #project-export{display:none}}
+
+/* Mega update: project search, folder navigation and backups */
+#replace-query{margin-top:2px}
+#replace-all{padding:8px 9px;font-size:11px}
+#search-count{padding:2px 1px}
+.tree-item.folder{font-weight:600}
+.tree-item.folder .file-icon{color:var(--accent)}
+#backup-export,#backup-import{white-space:nowrap}
+@media(max-width:1050px){#backup-export{display:none}}
+@media(max-width:760px){#backup-import{display:none}}
