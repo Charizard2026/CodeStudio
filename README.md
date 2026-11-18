@@ -36,3 +36,16 @@ Repositorio estático: no necesita framework ni comando de build. Conecta este r
 - Monaco, JSZip y Pyodide se descargan de CDN; se necesita conexión a Internet.
 - La vista previa usa un iframe aislado. Algunas funciones que requieren servidor, módulos ES servidos por HTTP o APIs restringidas no funcionarán desde srcdoc.
 - No incluye un backend ni un depurador completo de procesos.
+
+
+## Gestión de archivos
+
+- **Subir archivos** permite importar varios archivos sueltos.
+- **Subir carpeta** importa una carpeta completa conservando su estructura relativa.
+- También puedes arrastrar archivos y carpetas al área del editor.
+- **Descargar** descarga el archivo activo.
+- **Exportar ZIP** descarga el proyecto completo con su estructura de carpetas.
+- En el explorador puedes crear carpetas, renombrar y eliminar el archivo activo.
+- Los cambios se guardan localmente en el navegador. La exportación ZIP es la forma de llevar el proyecto a otro dispositivo.
+
+Nota: esta aplicación web no tiene acceso ilimitado al disco del equipo ni sustituye una terminal del sistema operativo. La importación y exportación se realizan mediante las funciones del navegador.
