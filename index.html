@@ -14,8 +14,7 @@
  <div class="brand"><span class="brand-mark">&lt;/&gt;</span><span>Code Studio</span><span class="brand-tag">WEB IDE</span></div>
  <div class="top-actions">
   <button id="command-button" title="Paleta de comandos (Ctrl+Shift+P)">⌘ Comandos</button>
-  <button id="new-file">Nuevo</button><button id="open-files">Importar</button>
-  <button id="save-file" class="quiet">Guardar</button><button id="run-code" class="run-button">▶ Ejecutar</button>
+  <button id="new-file">Nuevo archivo</button><button id="upload-files">Subir archivos</button><button id="upload-folder">Subir carpeta</button><button id="download-current">Descargar</button><button id="project-export" class="quiet">Exportar ZIP</button><button id="save-file" class="quiet">Guardar</button><button id="run-code" class="run-button">Ejecutar</button>
  </div>
 </header>
 <div class="workspace">
@@ -28,8 +27,8 @@
  </aside>
  <aside class="sidebar">
   <section class="sidebar-view" id="view-explorer">
-   <div class="side-heading"><span>EXPLORADOR</span><div><button id="add-file" title="Nuevo archivo">＋</button><button id="add-folder" title="Nueva carpeta">▱</button></div></div>
-   <div class="project-name"><span>⌄</span><strong id="project-title">MI PROYECTO</strong><div class="project-actions"><button id="project-export" title="Exportar ZIP">⇩</button></div></div>
+   <div class="side-heading"><span>EXPLORADOR</span><div><button id="rename-item" title="Renombrar archivo">✎</button><button id="delete-item" title="Eliminar archivo">×</button></div></div>
+   <div class="project-name"><span>⌄</span><strong id="project-title">MI PROYECTO</strong><div class="project-actions"><button id="add-file" title="Nuevo archivo">＋</button><button id="add-folder" title="Nueva carpeta">▱</button></div></div>
    <div id="file-tree" class="file-tree"></div>
   </section>
   <section class="sidebar-view" id="view-search" hidden>
@@ -72,5 +71,5 @@
 </div>
 <div class="modal-backdrop" id="command-modal" hidden><div class="command-box"><input id="command-filter" placeholder="Escribe un comando…"><div id="command-list"></div><div class="modal-hint">↑ ↓ para navegar · Enter para ejecutar · Esc para cerrar</div></div></div>
 <input id="file-input" type="file" multiple hidden><input id="folder-input" type="file" webkitdirectory directory multiple hidden>
-<script src="./app.js"></script>
+<script src="./app.js"></script><script src="./file-manager.js"></script>
 </body></html>
