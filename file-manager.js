@@ -48,7 +48,7 @@ zone.addEventListener("drop",async e=>{
  for(const item of items){const entry=item.webkitGetAsEntry?.();if(entry)collected.push(...await readEntry(entry));else{const f=item.getAsFile?.();if(f&&f.size<=2000000)collected.push([f.name,await f.text()]);}}
  const x=api();if(!collected.length){status("No se encontraron archivos de texto compatibles");return;}
  for(const [path,content] of collected)x.files[path]=content;
- const first=collected[0][0];x.open(first);x.persist();x.drawTree();status("Importados "+collected.length+" archivos");
+ x.persist();x.drawTree();x.drawTabs();status("Importados "+collected.length+" archivos. Ábrelos desde el explorador.");
 });
 document.addEventListener("keydown",e=>{
  if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key.toLowerCase()==="e"){e.preventDefault();api().exportZip();}
