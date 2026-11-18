@@ -1,24 +1,38 @@
 # Code Studio
 
-IDE web independiente con una interfaz oscura inspirada en LUIS OS.
+IDE web independiente, con una experiencia híbrida inspirada en VS Code. No depende de LUIS OS.
 
 ## Funciones
-- Editor Monaco, el mismo proyecto de editor que utiliza VS Code.
-- Archivos Python, HTML, CSS y JavaScript.
-- Ejecución Python con Pyodide en un Web Worker.
-- Vista previa HTML aislada en iframe.
-- Pestañas, creación e importación de archivos, guardado local y exportación de archivos.
+
+- Editor Monaco con resaltado, autocompletado básico del lenguaje, minimapa, múltiples pestañas y atajos.
+- Explorador de archivos, creación de carpetas, importación de archivos y carpetas.
+- Búsqueda de texto en todos los archivos del proyecto.
+- Vista previa HTML que integra el CSS y JavaScript hermanos del archivo HTML.
+- Vista dividida para editar y previsualizar a la vez.
+- Ejecución Python mediante Pyodide/WebAssembly en un Web Worker.
+- Consola con comandos locales de gestión del proyecto.
+- Plantillas web, Python, React por CDN y JSON.
+- Importación de repositorios públicos de GitHub.
+- Exportación del proyecto completo a ZIP.
+- Guardado automático en el almacenamiento local del navegador.
+- Tema claro/oscuro y paleta de comandos.
+
+## Atajos
+
+- Ctrl + S: guardar.
+- Ctrl + Enter: ejecutar el archivo activo.
+- Ctrl + Shift + P: abrir la paleta de comandos.
 
 ## Publicar en Cloudflare Pages
-Este repositorio contiene Code Studio como sitio estático independiente, separado de LUIS OS.
 
-1. Crea un proyecto Cloudflare Pages conectado al repositorio.
-2. Deja **Root directory (advanced)** en `/` (raíz del repositorio).
-3. No requiere comando de build ni carpeta de salida: es una web estática.
-4. Asigna el subdominio que prefieras al nuevo proyecto.
+Repositorio estático: no necesita framework ni comando de build. Conecta este repositorio a Cloudflare Pages y usa la raíz del repositorio como directorio de salida.
 
-## Limitaciones
-- Monaco y Pyodide se cargan desde CDN, por lo que necesitan conexión.
-- Python se ejecuta en Pyodide/WebAssembly, no en CPython del sistema.
-- No hay terminal Linux real ni acceso directo e ilimitado al disco.
-- Algunos paquetes nativos de Python no son compatibles con Pyodide.
+## Límites técnicos
+
+- Es una aplicación estática. La consola implementa comandos propios del IDE; **no es una terminal Linux** y no ejecuta comandos del sistema.
+- Python se ejecuta con Pyodide en WebAssembly, no en CPython del sistema. Algunos paquetes con extensiones nativas no funcionan.
+- La importación de GitHub está limitada a repositorios públicos y a los límites de la API de GitHub. No hace push ni commit remoto.
+- El guardado local permanece en el navegador y perfil donde se creó el proyecto. Exporta ZIP para crear copias de seguridad.
+- Monaco, JSZip y Pyodide se descargan de CDN; se necesita conexión a Internet.
+- La vista previa usa un iframe aislado. Algunas funciones que requieren servidor, módulos ES servidos por HTTP o APIs restringidas no funcionarán desde srcdoc.
+- No incluye un backend ni un depurador completo de procesos.
