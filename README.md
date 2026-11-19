@@ -11,6 +11,7 @@ IDE web independiente, con una experiencia híbrida inspirada en VS Code. No dep
 - Vista previa HTML que integra el CSS y JavaScript hermanos del archivo HTML.
 - Vista dividida para editar y previsualizar a la vez.
 - Ejecución Python mediante Pyodide/WebAssembly en un Web Worker.
+- Entrada interactiva de Python (`input()`) desde la consola del IDE mediante un canal seguro entre el navegador y el Worker.
 - Consola con comandos locales de gestión del proyecto.
 - Plantillas web, Python, React por CDN y JSON.
 - Importación de repositorios públicos de GitHub.
@@ -35,6 +36,7 @@ Repositorio estático: no necesita framework ni comando de build. Conecta este r
 
 - Es una aplicación estática. La consola implementa comandos propios del IDE; **no es una terminal Linux** y no ejecuta comandos del sistema.
 - Python se ejecuta con Pyodide en WebAssembly, no en CPython del sistema. Algunos paquetes con extensiones nativas no funcionan.
+- La entrada interactiva `input()` requiere aislamiento de origen. El archivo `_headers` activa COOP y COEP en Cloudflare Pages; si se usa otro alojamiento, debe configurarse `Cross-Origin-Opener-Policy: same-origin` y `Cross-Origin-Embedder-Policy: credentialless`.
 - La importación de GitHub está limitada a repositorios públicos y a los límites de la API de GitHub. No hace push ni commit remoto.
 - El guardado local permanece en el navegador y perfil donde se creó el proyecto. Exporta ZIP para crear copias de seguridad.
 - Monaco, JSZip y Pyodide se descargan de CDN; se necesita conexión a Internet.
